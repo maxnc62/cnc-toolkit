@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CNC Toolkit for Fusion 360</title>
+<meta name="description" content="CNC Toolkit: a free suite of add-ins for Autodesk Fusion 360 to design furniture and fit-outs cut on a CNC router (tenons, mortises, half-lap joints, dogbones, engraving, nesting).">
+<link rel="icon" href="assets/icone.png">
+<link rel="alternate" hreflang="fr" href="https://maxnc62.github.io/cnc-toolkit/">
+<link rel="alternate" hreflang="en" href="https://maxnc62.github.io/cnc-toolkit/en.html">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #1a110b; --surface: rgba(255, 238, 220, 0.045); --surface-solid: #231812; --text: #f4ebe1; --muted: #c4b3a2;
+    --border: rgba(255, 230, 205, 0.12); --accent: #ff8a2a; --accent-ink: #1b1009; --accent-soft: rgba(255, 138, 42, 0.14); --wood: #e3b47c;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: var(--text); background: var(--bg) url("assets/bois.webp") center / cover fixed;
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+  header.hero { padding: 64px 16px 40px; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand img { width: 52px; height: 52px; padding: 7px; border-radius: 14px; background: #f4ebe1; box-shadow: 0 6px 20px rgba(0,0,0,0.45); }
+  h1 { font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1.15; margin: 0; letter-spacing: -0.02em; }
+  .lead { font-size: 1.15rem; color: var(--muted); max-width: 640px; margin: 18px 0 28px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: var(--accent-ink); box-shadow: 0 10px 30px -8px rgba(255, 138, 42, 0.55);
+    text-decoration: none; font-weight: 600; padding: 14px 22px; border-radius: 10px; }
+  .btn:hover { filter: brightness(1.08); }
+  .btn svg { width: 20px; height: 20px; }
+  .meta { color: var(--muted); font-size: 0.9rem; margin-top: 12px; }
+  section { padding: 40px 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 1.6rem; margin: 0 0 20px; letter-spacing: -0.01em; }
+  h3 { font-size: 1rem; margin: 0 0 10px; color: var(--wood); text-transform: uppercase; letter-spacing: 0.05em; }
+  .tools { display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: start; }
+  .cat { margin-bottom: 26px; }
+  .cat ul { list-style: none; margin: 0; padding: 0; }
+  .cat li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .cat li:last-child { border-bottom: 0; }
+  .cat b { display: block; }
+  .cat span { color: var(--muted); font-size: 0.95rem; }
+  figure { margin: 0; }
+  figure img { width: 100%; height: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+  figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 8px; }
+  .sticky { position: sticky; top: 20px; }
+  ol.steps { padding-left: 1.3em; margin: 0; }
+  ol.steps li { margin-bottom: 14px; padding-left: 4px; }
+  .note { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent);
+    border-radius: 8px; padding: 14px 16px; margin-top: 20px; }
+  code { background: var(--accent-soft); padding: 1px 6px; border-radius: 5px; font-size: 0.9em; word-break: break-all; }
+  kbd { border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; font-size: 0.85em; background: var(--surface); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+  .showcase { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; margin-bottom: 32px; }
+  .showcase-head { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px 32px 24px; }
+  .tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--wood); background: color-mix(in srgb, var(--wood) 12%, transparent); padding: 3px 10px; border-radius: 999px; }
+  .showcase h3.title { font-size: 1.6rem; color: var(--text); text-transform: none; letter-spacing: -0.01em; margin: 10px 0 8px; }
+  .showcase p { margin: 0; color: var(--muted); }
+  .features { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; align-content: center; }
+  .features li { display: flex; gap: 10px; align-items: baseline; }
+  .features li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); transform: translateY(-1px); }
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
+  .shot { margin: 0; background: var(--surface); display: flex; flex-direction: column; }
+  .shot img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border: 0; border-radius: 0; }
+  .shot figcaption { margin: 0; padding: 14px 20px 18px; font-size: 0.92rem; color: var(--muted); display: flex; gap: 12px; align-items: baseline; }
+  .shots.single { grid-template-columns: 1fr; }
+  .shots.single .shot img { aspect-ratio: auto; }
+  .step { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-weight: 700;
+    font-size: 0.85rem; display: inline-grid; place-items: center; transform: translateY(6px); }
+  .shot figcaption b { color: var(--text); display: block; }
+  footer { padding: 32px 16px 48px; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border); }
+  a { color: #ffb070; }
+  .lang { position: absolute; top: 20px; right: 16px; display: flex; gap: 2px; padding: 3px; border-radius: 999px;
+    background: rgba(20, 13, 8, 0.7); border: 1px solid var(--border); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); text-shadow: none; }
+  .lang a { color: var(--muted); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em; padding: 4px 12px; border-radius: 999px; }
+  .lang a[aria-current] { background: var(--accent); color: var(--accent-ink); }
+  .lang a:not([aria-current]):hover { color: var(--text); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 9px; color: var(--text); text-decoration: none; font-weight: 600;
+    padding: 13px 20px; border-radius: 10px; border: 1px solid rgba(255, 176, 112, 0.45); background: rgba(20, 13, 8, 0.55); text-shadow: none; }
+  .btn-ghost:hover { border-color: var(--accent); background: rgba(255, 138, 42, 0.12); }
+  .btn-ghost svg { width: 18px; height: 18px; color: #ff7a6b; }
+  .soutien { display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: center; justify-content: space-between; background: var(--accent-soft);
+    border: 1px solid rgba(255, 138, 42, 0.35); border-radius: 18px; padding: 28px 32px; }
+  .soutien h2 { margin: 0 0 6px; }
+  .soutien p { margin: 0; color: var(--muted); max-width: 560px; }
+  header.hero { position: relative; }
+  /* Atelier : fond bois, lames, copeaux (anime au defilement) */
+  #atelier { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  #atelier::after { content: ""; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 75% at 50% 45%, rgba(10, 6, 3, 0.55), transparent 70%),
+                linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.35)); }
+  #atelier .d { position: absolute; left: 0; top: 0; will-change: transform; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.55)); }
+  #copeaux-bar { position: fixed; top: 0; left: 0; height: 3px; width: 100%; transform-origin: 0 50%; transform: scaleX(0);
+    background: linear-gradient(90deg, #ffb070, var(--accent)); z-index: 5; box-shadow: 0 0 12px rgba(255, 138, 42, 0.7); }
+  header.hero, .sheet { position: relative; z-index: 1; }
+  header.hero { text-shadow: 0 2px 18px rgba(0, 0, 0, 0.7); }
+  header.hero .lead { color: #e2d3c3; }
+  .sheet { max-width: 1040px; margin: 0 auto; border-radius: 24px 24px 0 0; background: rgba(22, 14, 9, 0.84);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid var(--border); border-bottom: 0;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); padding-top: 8px; }
+  .sheet > main > section:first-child { border-top: 0; }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.vu { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+  @media (max-width: 760px) {
+    .tools, .two, .showcase-head, .shots { grid-template-columns: 1fr; }
+    .showcase-head { padding: 24px 20px 20px; gap: 20px; }
+    .sticky { position: static; max-width: 300px; }
+    header.hero { padding-top: 76px; }
+  }
+</style>
+</head>
+<body>
+<div id="atelier" aria-hidden="true"></div>
+<div id="copeaux-bar" aria-hidden="true"></div>
+<header class="hero wrap">
+  <nav class="lang" aria-label="Language"><a href="index.html" lang="fr" hreflang="fr">FR</a><a href="en.html" lang="en" aria-current="page">EN</a></nav>
+  <div class="brand"><img src="assets/icone.png" alt=""><h1>CNC Toolkit</h1></div>
+  <p class="lead">A suite of add-ins for Autodesk Fusion 360, built to design plywood furniture and fit-outs cut on a CNC router. Tenons, mortises, half-lap joints, dogbones, part engraving and nesting, all in a single palette.</p>
+  <div class="actions">
+  <a class="btn" href="telecharger/CNC_Toolkit_Installation.zip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+    Download CNC Toolkit
+  </a>
+  <a class="btn-ghost" href="https://www.leetchi.com/fr/c/cnctoolkit-1230318?u=90c4d76c-9840-452b-9bfc-01a1373221ee&amp;utm_source=copylink&amp;utm_medium=social_sharing" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.6 2.6l.7 1 .7-1c1-1.5 2.5-2.6 4.6-2.6 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg> Support us</a>
+  </div>
+  <p class="meta">Zip file, 500 KB · version of October 13, 2026 · <a href="https://github.com/maxnc62/cnc-toolkit">source code on GitHub</a><br>Interface in English or French: click the flag in the CNC Toolkit window.</p>
+</header>
+
+<div class="sheet">
+<main class="wrap">
+<section id="outils">
+  <h2>The tools</h2>
+  <div class="tools">
+    <div>
+      <div class="cat"><h3>Modeling</h3><ul>
+        <li><b>CNC Extrude</b><span>Works like Fusion's own Extrude, but remembers your last settings and offers plywood thickness shortcuts.</span></li>
+        <li><b>Path pattern</b><span>Pattern along a path like Fusion's own, plus the choice of which face of the body lies against a plane.</span></li>
+      </ul></div>
+      <div class="cat"><h3>Engraving and labeling</h3><ul>
+        <li><b>CNC Engrave</b><span>Engraves part names (or your own text) on the selected faces.</span></li>
+      </ul></div>
+      <div class="cat"><h3>Tenon and mortise joinery</h3><ul>
+        <li><b>CNC Tenons</b><span>Creates tenons on plywood edges, with adjustable spacing and centering.</span></li>
+        <li><b>CNC Mortise</b><span>Cuts the mortises that match the tenons.</span></li>
+        <li><b>CNC Clearance</b><span>Applies a fit clearance to the mortises.</span></li>
+        <li><b>CNC Update</b><span>Rebuilds the mortises and clearance in one click after a model change.</span></li>
+        <li><b>Inner Edge</b><span>Selects the mortises and applies a fit clearance.</span></li>
+      </ul></div>
+      <div class="cat"><h3>Cutting</h3><ul>
+        <li><b>CNC Notch</b><span>Creates half-lap joints between a target body and one or more crossing bodies.</span></li>
+        <li><b>Joint</b><span>Splits a body into several pieces joined by a puzzle shape.</span></li>
+        <li><b>CNC Dogbone</b><span>Adds dogbones in the inside corners of half-laps, mortises and tenons, sized to your bit diameter.</span></li>
+      </ul></div>
+      <div class="cat"><h3>Fabrication</h3><ul>
+        <li><b>CNC Nesting</b><span>Lays parts flat on sheets (nesting), grouped by thickness, with DXF export.</span></li>
+      </ul></div>
+      <div class="cat"><h3>Selection and utilities</h3><ul>
+        <li><b>Select Face CNC</b><span>Selects every face coplanar with the clicked face.</span></li>
+        <li><b>Component debug</b><span>Replaces duplicate part numbers with the component name.</span></li>
+        <li><b>Edit Clearance</b><span>Changes the size of every clearance in the project in one click.</span></li>
+        <li><b>CNC Purge</b><span>Removes everything CNC Toolkit created on the selected bodies.</span></li>
+      </ul></div>
+    </div>
+    <figure class="sticky">
+      <img src="assets/palette-en.png" alt="The CNC Toolkit palette in Fusion 360, with tools grouped by category" width="340" height="992">
+      <figcaption>The CNC Toolkit palette: click an icon to launch the tool.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="en-images">
+  <h2>The tools in action</h2>
+
+  <article class="showcase" id="jonction">
+    <div class="showcase-head">
+      <div>
+        <span class="tag">Cutting</span>
+        <h3 class="title">CNC Joint</h3>
+        <p>Part too long for the sheet? CNC Joint splits it into two pieces that lock together like a puzzle. Click an edge, then drag the arrow to where you want the cut: the shape is drawn live on the part.</p>
+      </div>
+      <ul class="features">
+        <li>Puzzle shape sized automatically from the part's width and thickness</li>
+        <li>Head diameter, neck width and fillet radius adjustable by hand</li>
+        <li>Position to the millimeter, with the arrow or by typing the offset</li>
+        <li>Flip the joint direction in one click</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot">
+        <img src="assets/jonction-reglage.webp" alt="CNC Joint dialog in Fusion 360: selected edge, orange puzzle-shape preview on a shelf, offset arrow" width="1836" height="1266" loading="lazy">
+        <figcaption><span class="step">1</span><span><b>Place the joint</b>Live preview while you adjust it.</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/jonction-resultat.webp" alt="Shelf split into two pieces joined by a puzzle shape" width="1548" height="938" loading="lazy">
+        <figcaption><span class="step">2</span><span><b>Cut</b>Two pieces ready to machine, assembled without hardware.</span></figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <article class="showcase" id="entaille">
+    <div class="showcase-head">
+      <div>
+        <span class="tag">Cutting</span>
+        <h3 class="title">CNC Notch</h3>
+        <p>Where two panels cross, CNC Notch joins them with a half-lap: each part gets half of the notch and they slot into each other. Select the target part, then one or more parts crossing it, and the preview instantly shows what will be removed on each side.</p>
+      </div>
+      <ul class="features">
+        <li>Several crossings handled in one go</li>
+        <li>Depth split in proportion to width, 50/50, or typed by hand</li>
+        <li>Fit clearance and dogbones added automatically if you wish</li>
+        <li>Flip the direction, and update in one click when the model changes</li>
+      </ul>
+    </div>
+    <div class="shots">
+      <figure class="shot">
+        <img src="assets/entaille-apercu.webp" alt="CNC Notch preview: three shelf crossings, the material to remove shown in blue in one part and orange in the other" width="1414" height="943" loading="lazy">
+        <figcaption><span class="step">1</span><span><b>Notch preview</b>Blue and orange show what is removed from each of the two parts.</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/entaille-resultat.webp" alt="Finished half-lap joints, with dogbones in the corners" width="1616" height="1077" loading="lazy">
+        <figcaption><span class="step">2</span><span><b>Half-lap joint</b>The parts slot together, with dogbones in the corners for the bit.</span></figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <article class="showcase" id="calpinage">
+    <div class="showcase-head">
+      <div>
+        <span class="tag">Fabrication</span>
+        <h3 class="title">CNC Nesting</h3>
+        <p>Once the furniture is designed, CNC Nesting lays every part flat on sheets, ready to machine. Parts are grouped by thickness with the engraved face up, and each sheet appears in the palette with its fill rate.</p>
+      </div>
+      <ul class="features">
+        <li>The whole model or just the selection, grouped by thickness</li>
+        <li>Adjustable sheet sizes, edge margin and part spacing</li>
+        <li>Flat copies or the real parts moved, and back to the assembly in one click</li>
+        <li>DXF export, one file per sheet, for your CAM software</li>
+      </ul>
+    </div>
+    <div class="shots single">
+      <figure class="shot">
+        <img src="assets/calpinage.webp" alt="CNC Nesting: a curved 31-part piece of furniture next to its parts laid flat on three sheets in orange; the palette shows each sheet with its fill rate" width="2590" height="1150" loading="lazy">
+        <figcaption><span class="step">✓</span><span><b>31 parts on 3 sheets</b>The orange preview appears next to the model and in the palette, sheet by sheet.</span></figcaption>
+      </figure>
+    </div>
+  </article>
+</section>
+
+<section id="installation">
+  <h2>Installation</h2>
+  <div class="two">
+    <ol class="steps">
+      <li>Download <b>CNC_Toolkit_Installation.zip</b> with the button above.</li>
+      <li>Right-click the zip, then <b>Extract All…</b> Don't run the script from inside the zip.</li>
+      <li>Close Fusion 360.</li>
+      <li>Double-click <b>INSTALLER.bat</b> in the extracted folder. If Windows shows “Windows protected your PC”, click <b>More info</b> then <b>Run anyway</b>. Any version already installed is set aside, never overwritten.</li>
+      <li>Open Fusion 360, press <kbd>Shift</kbd>+<kbd>S</kbd> (Scripts and Add-Ins), <b>Add-Ins</b> tab. Select <b>ToolkitCNC</b>, check <b>Run on Startup</b>, then click <b>Run</b>.</li>
+    </ol>
+    <div>
+      <p style="margin-top:0">The CNC Toolkit palette appears, and will start on its own every time Fusion launches.</p>
+      <div class="note">
+        <b>ToolkitCNC isn't in the list?</b><br>
+        Click the green <b>+</b> next to “My Add-Ins” and choose the folder
+        <code>%APPDATA%\Autodesk\Autodesk Fusion 360\API\AddIns\ToolkitCNC</code>
+      </div>
+      <div class="note">
+        <b>Manual install (Mac, or without the script)</b><br>
+        Copy the <code>ToolkitCNC</code> folder from the zip into Fusion's AddIns folder, then follow step 5.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="soutien">
+  <div class="soutien">
+    <div>
+      <h2>Support CNC Toolkit</h2>
+      <p>CNC Toolkit is free. If it saves you time in the workshop, you can help fund its development through the crowdfunding page.</p>
+    </div>
+    <a class="btn" href="https://www.leetchi.com/fr/c/cnctoolkit-1230318?u=90c4d76c-9840-452b-9bfc-01a1373221ee&amp;utm_source=copylink&amp;utm_medium=social_sharing" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.6 2.6l.7 1 .7-1c1-1.5 2.5-2.6 4.6-2.6 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg> Support us</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  CNC Toolkit for Autodesk Fusion 360. Fusion 360 is a trademark of Autodesk; this project is not affiliated with Autodesk.
+</footer>
+</div>
+<script>
+(function () {
+  // Langue : retient le choix ; premiere visite depuis un navigateur non francophone -> anglais
+  var LANG = document.documentElement.lang;
+  document.querySelectorAll('.lang a').forEach(function (a) {
+    a.addEventListener('click', function () { try { localStorage.setItem('cnc-lang', a.getAttribute('lang')); } catch (e) {} });
+  });
+  if (LANG === 'fr') {
+    var choix = null; try { choix = localStorage.getItem('cnc-lang'); } catch (e) {}
+    if (choix === 'en' || (!choix && !/^fr/i.test(navigator.language || 'fr'))) { location.replace('en.html' + location.hash); return; }
+  }
+})();
+(function () {
+  var atelier = document.getElementById('atelier');
+  var bar = document.getElementById('copeaux-bar');
+  var calme = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS = 'http://www.w3.org/2000/svg';
+
+  function svg(w, h, inner) {
+    var e = document.createElementNS(NS, 'svg');
+    e.setAttribute('viewBox', '0 0 ' + w + ' ' + h); e.setAttribute('width', w); e.setAttribute('height', h);
+    e.setAttribute('class', 'd'); e.innerHTML = inner; atelier.appendChild(e); return e;
+  }
+
+  // Lame de scie circulaire : dents generees, fentes de dilatation, alesage
+  function lame(r, dents, id) {
+    var c = r + 4, pts = [];
+    for (var i = 0; i < dents; i++) {
+      var a = i / dents * Math.PI * 2, a2 = (i + 0.62) / dents * Math.PI * 2, a3 = (i + 0.7) / dents * Math.PI * 2;
+      pts.push([c + Math.cos(a) * (r - 14), c + Math.sin(a) * (r - 14)]);
+      pts.push([c + Math.cos(a2) * r, c + Math.sin(a2) * r]);
+      pts.push([c + Math.cos(a3) * (r - 3), c + Math.sin(a3) * (r - 3)]);
+    }
+    var d = 'M' + pts.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join('L') + 'Z';
+    var fentes = '';
+    for (var k = 0; k < 4; k++) {
+      var b = k * Math.PI / 2 + 0.4, x1 = c + Math.cos(b) * (r - 18), y1 = c + Math.sin(b) * (r - 18),
+          x2 = c + Math.cos(b) * (r * 0.62), y2 = c + Math.sin(b) * (r * 0.62);
+      fentes += '<path d="M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2 + '" stroke="#2b2522" stroke-width="3" stroke-linecap="round"/>' +
+                '<circle cx="' + x2 + '" cy="' + y2 + '" r="5" fill="#2b2522"/>';
+    }
+    return svg(2 * c, 2 * c,
+      '<defs><radialGradient id="' + id + '" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#eef1f3"/>' +
+      '<stop offset="0.55" stop-color="#9da4aa"/><stop offset="1" stop-color="#5d646a"/></radialGradient></defs>' +
+      '<path d="' + d + '" fill="url(#' + id + ')" stroke="#4a5055" stroke-width="1"/>' +
+      '<circle cx="' + c + '" cy="' + c + '" r="' + (r * 0.86) + '" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>' +
+      '<circle cx="' + c + '" cy="' + c + '" r="' + (r * 0.5) + '" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>' + fentes +
+      '<circle cx="' + c + '" cy="' + c + '" r="' + (r * 0.24) + '" fill="#5a6066" stroke="#3a3f43" stroke-width="2"/>' +
+      '<circle cx="' + c + '" cy="' + c + '" r="' + (r * 0.1) + '" fill="#1a1512"/>');
+  }
+
+  // Meche plate (comme sur l'etabli)
+  function meche() {
+    return svg(90, 330,
+      '<defs><linearGradient id="mx" x1="0" x2="1"><stop offset="0" stop-color="#7d858b"/><stop offset="0.45" stop-color="#e6e9ec"/><stop offset="1" stop-color="#6a7177"/></linearGradient></defs>' +
+      '<rect x="38" y="95" width="14" height="230" rx="3" fill="url(#mx)"/>' +
+      '<path d="M45 2 L52 30 L72 30 L80 70 L60 100 L30 100 L10 70 L18 30 L38 30 Z" fill="url(#mx)" stroke="#565d62" stroke-width="1.2"/>' +
+      '<circle cx="45" cy="62" r="4" fill="#2a2522"/>');
+  }
+
+  // Tasseau de bois clair
+  var nb = 0;
+  function tasseau(w, h) {
+    var id = 'tg' + (nb++), grain = '';
+    for (var g = 1; g < 7; g++) grain += '<path d="M4 ' + (h * g / 7) + ' C ' + (w * 0.3) + ' ' + (h * g / 7 + 3) + ', ' + (w * 0.6) + ' ' + (h * g / 7 - 3) + ', ' + (w - 4) + ' ' + (h * g / 7) + '" stroke="rgba(150,95,45,0.28)" fill="none"/>';
+    return svg(w, h,
+      '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#f3dcb8"/><stop offset="1" stop-color="#d5ab78"/></linearGradient></defs>' +
+      '<rect width="' + w + '" height="' + h + '" rx="3" fill="url(#' + id + ')"/>' + grain +
+      '<rect width="' + w + '" height="' + h + '" rx="3" fill="none" stroke="rgba(120,75,35,0.35)"/>');
+  }
+
+  // Copeau enroule
+  var formes = [
+    'M4 26 C 8 6, 38 0, 54 10 C 62 16, 58 28, 48 27 C 39 26, 43 15, 34 14 C 21 13, 17 28, 4 26 Z',
+    'M2 18 C 14 4, 40 2, 58 14 C 50 20, 40 18, 30 22 C 20 26, 12 30, 2 18 Z',
+    'M6 30 C 4 14, 22 2, 40 6 C 54 9, 60 22, 50 30 C 44 24, 36 18, 26 20 C 16 22, 12 30, 6 30 Z'
+  ];
+  function copeau(i) {
+    var e = svg(62, 34,
+      '<path d="' + formes[i % 3] + '" fill="' + (['#efd3a8', '#e6c08e', '#f6e2c2'][i % 3]) + '" stroke="#b9874f" stroke-width="1"/>' +
+      '<path d="M12 22 C 22 12, 36 10, 48 16" fill="none" stroke="rgba(160,105,55,0.45)" stroke-width="1"/>');
+    e.style.filter = 'drop-shadow(0 4px 4px rgba(0,0,0,0.5))';
+    return e;
+  }
+
+  var el = [];
+  function place(e, x, y, opts) { el.push(Object.assign({ e: e, x: x, y: y, v: 0, rot: 0, rv: 0, s: 1, wrap: false }, opts)); }
+
+  function construire() {
+    atelier.innerHTML = ''; el = [];
+    var W = innerWidth, H = innerHeight, etroit = W < 760;
+    var sheetL = Math.max(0, (W - 1040) / 2);
+    place(lame(170, 48, 'l1'), (etroit ? -230 : sheetL - 330), (etroit ? -230 : -160), { v: 0.05, rv: 0.22 });
+    place(lame(200, 56, 'l2'), W - (etroit ? 120 : sheetL + 160), H - 190, { v: -0.04, rv: -0.18 });
+    if (!etroit) {
+      place(meche(), W - sheetL * 0.55 - 45, H * 0.42, { v: 0.12, rot: 35 });
+      place(tasseau(170, 62), sheetL * 0.18 - 40, H * 0.30, { v: 0.2, rot: -24 });
+      place(tasseau(120, 70), sheetL * 0.25 - 20, H * 0.78, { v: 0.32, rot: 12 });
+      place(tasseau(150, 54), W - sheetL * 0.8, H * 0.12, { v: 0.26, rot: 64 });
+    }
+    var n = etroit ? 14 : 46;
+    for (var i = 0; i < n; i++) {
+      var r = Math.random(), x;
+      if (etroit) x = Math.random() * W;
+      else x = r < 0.5 ? Math.random() * (sheetL + 30) - 30 : W - Math.random() * (sheetL + 30) - 30;
+      var c = copeau(i);
+      if (etroit) c.style.opacity = 0.45;
+      place(c, x, Math.random() * (H + 160) - 80,
+        { v: 0.12 + Math.random() * 0.55, rot: Math.random() * 360, rv: (Math.random() - 0.5) * 0.4, s: 0.55 + Math.random() * 0.8, wrap: true });
+    }
+    rendre();
+  }
+
+  function rendre() {
+    var y = calme ? 0 : scrollY, H = innerHeight, max = document.documentElement.scrollHeight - H;
+    for (var i = 0; i < el.length; i++) {
+      var o = el[i], ty = o.y - y * o.v;
+      if (o.wrap) { var span = H + 160; ty = ((ty + 80) % span + span) % span - 80; }
+      o.e.style.transform = 'translate(' + o.x + 'px,' + ty + 'px) rotate(' + (o.rot + y * o.rv) + 'deg) scale(' + o.s + ')';
+    }
+    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, scrollY / max) : 0) + ')';
+  }
+
+  var attente = false;
+  addEventListener('scroll', function () {
+    if (!attente) { attente = true; requestAnimationFrame(function () { attente = false; rendre(); }); }
+  }, { passive: true });
+  var t; addEventListener('resize', function () { clearTimeout(t); t = setTimeout(construire, 150); });
+  construire();
+
+  // Apparition des sections au defilement
+  var cibles = document.querySelectorAll('.showcase, .sheet section > h2, .cat, .tools figure, ol.steps, .note');
+  if ('IntersectionObserver' in window && !calme) {
+    var io = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('vu'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    cibles.forEach(function (c) { c.classList.add('reveal'); io.observe(c); });
+  }
+})();
+</script>
+</body>
+</html>
