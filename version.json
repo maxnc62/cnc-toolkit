@@ -1,0 +1,9 @@
+{
+  "version": "2026.10.14",
+  "date": "2026-10-14",
+  "zip": "telecharger/CNC_Toolkit_Installation.zip",
+  "sha256": "e63098c1655c27f552d7f4186bcfb9d4f8af6cf636b3332b49d4194d8a7f85bf",
+  "taille": 505898,
+  "notes_fr": "Nouveau : bouton Mettre a jour dans la fenetre CNC Toolkit, avec un message a l'ouverture quand une nouvelle version est disponible.",
+  "notes_en": "New: Update button in the CNC Toolkit window, with a message at startup when a new version is available."
+}
