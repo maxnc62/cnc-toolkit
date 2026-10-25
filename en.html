@@ -64,6 +64,9 @@
   .shot figcaption { margin: 0; padding: 14px 20px 18px; font-size: 0.92rem; color: var(--muted); display: flex; gap: 12px; align-items: baseline; }
   .shots.single { grid-template-columns: 1fr; }
   .shots.single .shot img { aspect-ratio: auto; }
+  .shots.portrait .shot img { aspect-ratio: 4 / 5; object-fit: contain; background: #ececec; padding: 18px; }
+  .shots + .shots { border-top: 1px solid var(--border); }
+  .showcase p.accent-p { margin-top: 14px; padding: 10px 14px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 6px; color: var(--text); }
   .step { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-weight: 700;
     font-size: 0.85rem; display: inline-grid; place-items: center; transform: translateY(6px); }
   .shot figcaption b { color: var(--text); display: block; }
@@ -118,7 +121,7 @@
 <header class="hero wrap">
   <nav class="lang" aria-label="Language"><a href="index.html" lang="fr" hreflang="fr">FR</a><a href="en.html" lang="en" aria-current="page">EN</a></nav>
   <div class="brand"><img src="assets/icone.png" alt=""><h1>CNC Toolkit</h1></div>
-  <p class="lead">A suite of add-ins for Autodesk Fusion 360, built to design plywood furniture and fit-outs cut on a CNC router. Tenons, mortises, half-lap joints, dogbones, part engraving and nesting, all in a single palette.</p>
+  <p class="lead">A suite of add-ins for Autodesk Fusion 360, built to design plywood furniture and fit-outs cut on a CNC router. Tenons, mortises, half-lap joints, dogbones, part patterns along a path, engraving and nesting, all in a single palette.</p>
   <div class="actions">
   <a class="btn" href="telecharger/CNC_Toolkit_Installation.zip">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
@@ -126,7 +129,7 @@
   </a>
   <a class="btn-ghost" href="https://www.leetchi.com/fr/c/cnctoolkit-1230318?u=90c4d76c-9840-452b-9bfc-01a1373221ee&amp;utm_source=copylink&amp;utm_medium=social_sharing" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.6 2.6l.7 1 .7-1c1-1.5 2.5-2.6 4.6-2.6 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg> Support us</a>
   </div>
-  <p class="meta">Zip file, 500 KB · version of October 14, 2026 · <a href="https://github.com/maxnc62/cnc-toolkit">source code on GitHub</a><br>Interface in English or French: click the flag in the CNC Toolkit window.</p>
+  <p class="meta">Zip file, 570 KB · version of October 25, 2026 · <a href="https://github.com/maxnc62/cnc-toolkit">source code on GitHub</a><br>Interface in English or French: click the flag in the CNC Toolkit window.</p>
 </header>
 
 <div class="sheet">
@@ -137,7 +140,7 @@
     <div>
       <div class="cat"><h3>Modeling</h3><ul>
         <li><b>CNC Extrude</b><span>Works like Fusion's own Extrude, but remembers your last settings and offers plywood thickness shortcuts.</span></li>
-        <li><b>Path pattern</b><span>Pattern along a path like Fusion's own, plus the choice of which face of the body lies against a plane.</span></li>
+        <li><b>CNC Pattern on Path</b><span>Spreads library parts (with tenons) along several paths; the parts follow every change to the path.</span></li>
       </ul></div>
       <div class="cat"><h3>Engraving and labeling</h3><ul>
         <li><b>CNC Engrave</b><span>Engraves part names (or your own text) on the selected faces.</span></li>
@@ -173,6 +176,46 @@
 
 <section id="en-images">
   <h2>The tools in action</h2>
+
+  <article class="showcase" id="reseau">
+    <div class="showcase-head">
+      <div>
+        <span class="tag">Modeling · new</span>
+        <h3 class="title">CNC Pattern on Path</h3>
+        <p>CNC Pattern on Path spreads parts along one or several paths: uprights under a curved shelf, rails, spacers. You draw the part once in the library, with its tenons, then click the paths. Each path has its own settings in a small panel, right in the viewport.</p>
+        <p class="accent-p"><b>Fully parametric:</b> every change to a path is taken into account and all parts update by themselves. The first part stays at the start of the path and the last part stays at the end.</p>
+      </div>
+      <ul class="features">
+        <li>Parts library: "New object" creates a body or a component (width, height, plywood thickness, tenons on the edges), with a dimensioned preview</li>
+        <li>Several paths at once, each with its own quantity, symmetry, "to the end of the path" and part direction</li>
+        <li>Hide or show several parts on several paths at the same time</li>
+        <li>Quantity based on path length, copies numbered in sequence (T1 (1), T1 (2)…)</li>
+        <li>Left, center or right reference, offsets, and part laid against a plane</li>
+      </ul>
+    </div>
+    <div class="shots portrait">
+      <figure class="shot">
+        <img src="assets/reseau-nouvel-objet.webp" alt="New CNC object dialog: 100 x 100 mm body in 18 mm plywood, tenons on the top and bottom edges, dimensioned preview on black" width="628" height="1356" loading="lazy">
+        <figcaption><span class="step">1</span><span><b>Create the part</b>Body or component, size, thickness and tenons, with a dimensioned preview.</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/reseau-fenetre.webp" alt="CNC Pattern on Path dialog: part T1 picked from the library, 100 x 100 mm preview with one 30 x 18 mm tenon" width="648" height="1008" loading="lazy">
+        <figcaption><span class="step">2</span><span><b>Pick it from the library</b>The part is remembered for the next patterns and stays editable.</span></figcaption>
+      </figure>
+    </div>
+    <div class="shots single">
+      <figure class="shot">
+        <img src="assets/reseau-chemins.webp" alt="Two-level curved shelf: three paths selected, uprights with tenons in orange preview, path panel with quantity sliders and icons" width="1800" height="932" loading="lazy">
+        <figcaption><span class="step">3</span><span><b>Several paths at once</b>One row per path: quantity slider, symmetry, to the end of the path, flip and eye.</span></figcaption>
+      </figure>
+    </div>
+    <div class="shots single">
+      <figure class="shot">
+        <img src="assets/reseau-masquage.webp" alt="Hiding parts: five uprights ticked on a path, green Confirm hiding button" width="1800" height="931" loading="lazy">
+        <figcaption><span class="step">4</span><span><b>Hide parts</b>Tick the parts to remove on one or several paths, then confirm.</span></figcaption>
+      </figure>
+    </div>
+  </article>
 
   <article class="showcase" id="jonction">
     <div class="showcase-head">

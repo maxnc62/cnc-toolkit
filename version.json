@@ -1,9 +1,9 @@
 {
-  "version": "2026.10.14",
-  "date": "2026-10-14",
+  "version": "2026.10.25",
+  "date": "2026-10-25",
   "zip": "telecharger/CNC_Toolkit_Installation.zip",
-  "sha256": "e63098c1655c27f552d7f4186bcfb9d4f8af6cf636b3332b49d4194d8a7f85bf",
-  "taille": 505898,
-  "notes_fr": "Nouveau : bouton Mettre a jour dans la fenetre CNC Toolkit, avec un message a l'ouverture quand une nouvelle version est disponible.",
-  "notes_en": "New: Update button in the CNC Toolkit window, with a message at startup when a new version is available."
+  "sha256": "636af6da001ade6757451bb218317351f3b96fab8f8de7df1f206c35005bf66f",
+  "taille": 581443,
+  "notes_fr": "Nouveau : Reseau CNC. Bibliotheque de pieces avec tenons (Nouvel objet, corps ou composant), plusieurs chemins a la fois avec un panneau de reglage par chemin, masquage de plusieurs pieces, et pieces qui suivent chaque modification du chemin (la premiere reste au debut, la derniere au bout).",
+  "notes_en": "New: CNC Pattern on Path. Parts library with tenons (New object, body or component), several paths at once with a settings panel per path, hiding several parts, and parts that follow every change to the path (the first stays at the start, the last at the end)."
 }
