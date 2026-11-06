@@ -1,9 +1,9 @@
 {
-  "version": "2026.10.25",
-  "date": "2026-10-25",
+  "version": "2026.11.06",
+  "date": "2026-11-06",
   "zip": "telecharger/CNC_Toolkit_Installation.zip",
-  "sha256": "636af6da001ade6757451bb218317351f3b96fab8f8de7df1f206c35005bf66f",
-  "taille": 581443,
-  "notes_fr": "Nouveau : Reseau CNC. Bibliotheque de pieces avec tenons (Nouvel objet, corps ou composant), plusieurs chemins a la fois avec un panneau de reglage par chemin, masquage de plusieurs pieces, et pieces qui suivent chaque modification du chemin (la premiere reste au debut, la derniere au bout).",
-  "notes_en": "New: CNC Pattern on Path. Parts library with tenons (New object, body or component), several paths at once with a settings panel per path, hiding several parts, and parts that follow every change to the path (the first stays at the start, the last at the end)."
+  "sha256": "88cb555437ad3bc282831bdd7fdd47c268abde38a6ec05ee17ecc256bad55b89",
+  "taille": 732216,
+  "notes_fr": "Nouveau : Traverse de renfort (nouveaux modes, reglages parametriques), poignee de quantite dans Reseau CNC, fenetres de reglage devant le modele, demarrage automatique des add-ins et Calpinage CNC plus rapide.",
+  "notes_en": "New: Reinforcement Crossbar (new modes, parametric settings), quantity handle in CNC Pattern on Path, settings windows in front of the model, add-ins starting automatically, and a faster CNC Nesting."
 }
