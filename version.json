@@ -1,9 +1,9 @@
 {
-  "version": "2026.11.06",
-  "date": "2026-11-06",
+  "version": "2026.11.20",
+  "date": "2026-11-20",
   "zip": "telecharger/CNC_Toolkit_Installation.zip",
-  "sha256": "88cb555437ad3bc282831bdd7fdd47c268abde38a6ec05ee17ecc256bad55b89",
-  "taille": 732216,
-  "notes_fr": "Nouveau : Traverse de renfort (nouveaux modes, reglages parametriques), poignee de quantite dans Reseau CNC, fenetres de reglage devant le modele, demarrage automatique des add-ins et Calpinage CNC plus rapide.",
-  "notes_en": "New: Reinforcement Crossbar (new modes, parametric settings), quantity handle in CNC Pattern on Path, settings windows in front of the model, add-ins starting automatically, and a faster CNC Nesting."
+  "sha256": "d5c782780d8c8c4d2cdf2f1e9471bc4b5d35b96da62c3acaa15bb776d7f1127d",
+  "taille": 977588,
+  "notes_fr": "Nouveau : export PDF du calpinage (cotes, fiche de debit, ordre des coupes), Montants de dossier, Traverses de dossier et Traverse posee sur un corps, Debug composant plus rapide, corrections du calpinage, de Reseau, Jonction et Gravure.",
+  "notes_en": "New: nesting PDF export (dimensions, cutting list, cut order), Backrest Uprights, Backrest Crossbars and Brace placed on a body, faster Component Debug, fixes in Nesting, Pattern on Path, Junction and Engraving."
 }
