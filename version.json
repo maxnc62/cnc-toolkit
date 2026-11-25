@@ -1,9 +1,9 @@
 {
-  "version": "2026.11.20",
-  "date": "2026-11-20",
+  "version": "2026.11.25",
+  "date": "2026-11-25",
   "zip": "telecharger/CNC_Toolkit_Installation.zip",
-  "sha256": "d5c782780d8c8c4d2cdf2f1e9471bc4b5d35b96da62c3acaa15bb776d7f1127d",
-  "taille": 977588,
-  "notes_fr": "Nouveau : export PDF du calpinage (cotes, fiche de debit, ordre des coupes), Montants de dossier, Traverses de dossier et Traverse posee sur un corps, Debug composant plus rapide, corrections du calpinage, de Reseau, Jonction et Gravure.",
-  "notes_en": "New: nesting PDF export (dimensions, cutting list, cut order), Backrest Uprights, Backrest Crossbars and Brace placed on a body, faster Component Debug, fixes in Nesting, Pattern on Path, Junction and Engraving."
+  "sha256": "e89ec2d4d482bbe1b92041e82a8a0d8ea64c0032e0abb7be194af150abbe0c41",
+  "taille": 1031055,
+  "notes_fr": "Nouveau : angle exterieur dans Traverse, decaisse conserve en haut des traverses de renfort, saisie clavier et parametres insensibles a la casse dans Traverse, apercus de Reseau debout sur chemin droit et arret de la face exterieure en bout de chemin, PDF du calpinage enrichi et choix des panneaux avant l'apercu.",
+  "notes_en": "New: outside corner in Brace, top recess kept on reinforcing braces, case-insensitive keyboard input and parameters in Brace, Pattern on Path previews upright on straight paths and outer face stopping at the path end, richer nesting PDF and panel choice before the preview."
 }
